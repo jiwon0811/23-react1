@@ -1,6 +1,29 @@
 # 201930138이지원
 ## 강의날짜:03/23(4주차) <br>
 ### 학습내용: 
+ jsx -- https://ko.reactjs.org/docs/introducing-jsx.html  
+ jsx 문법   자바스크립트의 확장문법  
+ jsx 속성  태그사용시 꼭 닫아야함   
+
+--- 
+## jsx의 역할  
+1. jsx는 내부적으로 XML/HTML코드를 자바스크립트로 변환  
+2. React가 createElement함수를 사용해 자동으로 자바스크립트로 변환해줌  
+3. 만약JS작업시 직접 createElement함수를 사용해야함  
+4. JSX는 가독성을 높이는 역할 (p.98/99)
+
+## jsx의 장점  
+코드가 간결해짐(가독성 up)  
+injection Attack이라 불리는 해킹 방법을 방어함으로써 보안에 강함
+
+## jsx 사용법
+모든 자바스크립트 문법 지원  
+XML이나 html울 섞어서 사용  
+HTML이나 xml에 자바스크립트 코들 사용하고 싶으면{} 사용(p.104)  
+
+
+
+ 
 
 
 

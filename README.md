@@ -1,6 +1,59 @@
 # 201930138이지원
+``` javascript
+``` 
+## 강의날짜:04/06(6주차)
+### 학습내용  
+## 컴포넌트 추출  (p.157)
+- 복잡한 컴포넌트를 쪼개 여러개로 나눌수 있음  
+- 큰 컴포넌트에서 일부 추출해 새로운 컴포넌트를 만드는 것  
+    Comment.jsx/CommentList.jsx  
+    jsx파일로 배포 x public에서만 배포됨 
+ ## State와 생명주기(6장)  
+### state란?  
+- 리액트 컴포넌트의 상태를 의미함  
+- 상태의 의미는 컴포넌트의 데이터(변경가능한 데이터)  
+- State가 변하면 다시 랜더링 되기 때문에 렌더링과 관련된 값만 state에 포함 시켜아함  
+### State의 특징  
+- 자바스크립트 객체  
+ex) LikeButton은 class의 컴포넌트임  
+constructor는 생성자 이고 그안에 있는 this.stae가 현state임  
+*함수형에서는 useState()라는 함수 사용
+``` javascript
+class LikeButton extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={
+            liked:false
+        }
+    }
+}
+```
+state는 변경가능하다고 했지만 직접수정 안됨  
+state를 변경하고자 할 때는 setState()함수 사용
+``` javascript
+//state를 직접 수정(잘못된 사용밥)
+this.state={
+    name:`Inje`
+}
+```
+``` javascript
+//state를 직접 수정(옳바른 사용밥)
+this.setState=({
+    name:`Inje`
+});
+```
+데이터전달 2가지  
+props,state 
 
-## 강의날짜:03/30 (5주차) <br>
+### 생명주기(p.183)
+ - 생명주기는 컴포넌트 생성시점, 사용 시점,종료 시점을 나타내는 것  
+ - Constructor가 실행되면서 컴포넌트 생성  
+ - 컴포넌트가 소멸하기 전까지 여러 번 랜더링 함  
+ - 랜더링은 props,setState(),forceUpdate()에 의해 상태가 변경되면 이루어짐  
+ - 랜더링이 끝나면 componentDidUpdate()함수 호출
+---
+
+## 강의날짜:03/30 (5주차)
 
 ### 학습내용
 ## 4장 엘리먼트에 대해 p.118  

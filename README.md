@@ -1,7 +1,254 @@
 # 201930138이지원
 ``` javascript
 ``` 
+## 강의날짜:04/27(9주차)  
+### 학습내용
+## 챕터9 조건부 렌더링
 
+``` javascript
+function Greeting(props){
+    const isLoggenIn =props.isLoggedIn;
+    if(isLoggenIn){
+        return<UserGreeting/>;
+
+    }
+    return <GuestGreeting/>;
+}
+
+``` 
+- props로 전달 받은 isLoggenIn이 true이면 <UserGreeting/>을  
+ false면<GuestGreeting/>을 return합니다  
+ - 이와 같은 렌더링을 조건부 렌더링 이라고 합니다.
+ ### 엘리먼트 변수
+ 렌더링해야 될 컴포넌트를 변수처럼 사용하는 방법이 엘리먼트 변수입니다.  
+ 272page 코드처럼 state에 따라 button 변수에 컴포넌트의 객체를 저장하여 return문에서 사용하고있습니다.  
+ ``` javascript
+let button;
+if(isLoggedIn){
+    button=<LogoutButton onClick={handleLogoutClick}/>;
+}else{
+    button=<LoginButton onClick={handleLogoutClick}/>;
+}
+return(
+    <div>
+    <Greeting isLoggedIn={isLoggedIn}/>
+    {button}
+    </div>
+   )
+}
+``` 
+### 인라인 조건
+- 필요한 곳에 조건문을 직접 넣어 사용하는 방법입니다.
+1. 인라인 if  
+- if문을 직접 사용하지 않고,동일한 효과를 내기위해 &&논리 연산자를 사용합니다.
+- &&는 And연산자로 모든 조건이 참일때만 참이 됩니다. 
+- 첫 번째 조간이 거짓이면 두번째 조건은 판단할 필요가 없습니다.단축평가.
+``` javascript
+true && expression ->expression
+false && expression ->false
+{unreadMessages.length>0 &&
+<h2>
+현재 {unreadMessages.length}개의 읽지 않은 메시지가 있습니다.
+</h2>
+}
+```
+*판단만 하지 않는 것이고 결과 값은 그대로 리턴됩니다.  
+인라인 if-else  
+삼항 연산자를 사용합니다   
+문자열이나 엘리먼트를 넣어서 사용할 수도 있습니다.
+``` javascript
+function UserStatus(props){
+    return(
+        <div>
+        이 사용자는 현재 <b>{props.isLoggedIn?'로그인':'로그인하지 않은'}</b>상태입니다.
+        </div>
+    )
+}
+<div>
+<Greeting isLoggedIn={isLoggedIn}/>
+{isLoggedIn
+?<LogoutButton onClick={habdleLogoutClick}/>
+:<LoginButton onClick={habdleLoginClick}/>
+}
+``` 
+### 컴포넌트 렌더링 막기
+- 컴포넌트를 렌더링 하고 싶지않을 떄에는 null을 리턴합니다.
+``` javascript
+function WarningBanner(props){
+    if(!props.warning){
+        return null;
+    }
+    return(
+        <div>경고!</div>
+    );
+}
+``` 
+
+## 챕터8(이벤트 핸들링)
+DOM에서 클릭이벤트 처리
+```javascript
+<button onclick="activate()">
+button
+</button>
+```
+React에서 클릭 이벤트 처리하는 예제코드
+``` javascript
+<button onClick={activate}>
+button
+</button>
+```  
+- 둘의 차이점은 click의 c의 대소문자 차이(Camel case)  
+- 전달하려는 함수는 문자열에서 함수 그대로 전달  
+- 이벤트 발생시 해당 이벤트를 처리하는 함수를 "이벤트 핸들러(Event Handler)"라고 합니다.
+또는 이벤트가 발생하는 것을 계속 듣고있다는 의미로 "이벤트 리스너(Event Listener)"라고 
+부르기도 합니다.  
+ ### 이벤트 핸들러 추가하는 방법은?
+-  버튼을 클릭하면 이벤트 핸들러 함수인 handleClick()함수를 호출 하도록 되어 있습니다.
+- bind를 사용하지 않으면 this.handleClick은 글로벌 스코프에서 호출되어,undefined로 사용할 수 없기 떄문입니다 
+- bind를 사용하지 않을려면 화살표 함수를 사용하는 방법도 있습니다.
+- 하지만 클래스 컴포넌트는 이제 거의 사용하지 않기 때문에 이 내용은 참고만 합니다.
+``` javascript
+class Toggle extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={isToggleOn:true};
+        //콜백에서 this를 사용하기 위해선 바인딩을 필수적으로 해야됨
+        this.handleClick=this.handleClick.bind(this);
+    }
+    handleClick(){
+        thos.setState(prevState=>({
+            isToggleOn:!prevState.isToggleOn
+        }));
+    }
+    render(){
+        return(
+            <button onClick={this.handleClick}>
+            {this.state.isToggleOn?'켜짐':'꺼짐'}
+            </button>
+        );
+    }
+}
+``` 
+- 클래스형을 함수형으로 바꾸면 다음 코드와 같습니다
+``` javascript
+function Toggle(props){
+    const[isToggleOn,setIsToggleOn]=useState(true);
+    //방법1.함수 안에 함수로 정의
+    function handleClick(){
+        setIsToggleON((isToggleOn)=>!isToggleOn);
+    }
+    //방법2. row function을 사용하여 정의
+    const handleClick=()=>{
+        setIsToggleOn((isToggeOn)=>!isToggleOn);
+    }
+    return(
+        <button onClick={handleClick}>
+        {isTOggleOn?"켜짐":"꺼짐"}
+        </button>
+    );
+}
+``` 
+함수형에서 이벤트 핸들러를 정의하는 방법은 두가지입니다.
+함수형에선this를 사용하지 않고 onClick에서 바로 HandleClick을 넘기면 됩니다.
+### Arguments 전달하기
+함수를 정의할 떄는 파라미터 혹은 매개변수  
+함수를 사용할 떄는 Argument혹은 인자 라고 부릅니다.  
+이벤트 핸들러에 매개변수를 전달해야 하는 경우도 많습니다.  
+``` javascript
+<button onClick={(event)=>this.deleteItem(id,event)}>삭제하기</button>
+<button onClick={this.deleteItem.bind(this,id)}>삭제하기</button>
+``` 
+위의 코드는 모두 동일한 역할은 하지만 하나는 화살표 함수를,다른 하나는 bind를 사용했습니다.  
+event라는 매개변수는 리액트의 이벤트 객체를 의미합니다.  
+두 방법 모두 첫번째 매개변수는 id이고 두 번째 매개변수로 event가 전달됩니다     
+첫 번째 코드는 명시적으로 event를 매개변수로 넣어 주었고 ,  
+두 번째 코드는 id이후 두번째 매개변수로 
+event가 자동 전달 됩니다.(이 방법은 클래스형에서 사용하는 방법입니다.)  
+함수형 컴포넌트에서 이벤트 핸들러에 매개변수를 전달할 때는 p.254 코드와 같이합니다.
+``` javascript
+import React, { useState } from "react";
+
+function ConfirmButton(props) {
+    const [isConfirmed, setIsConfirmed] = useState(false);
+
+    const handleConfirm = () => {
+        setIsConfirmed((prevIsConfirmed) => !prevIsConfirmed);
+    };
+
+    return (
+        <button onClick={handleConfirm} disabled={isConfirmed}>
+            {isConfirmed ? "확인됨" : "확인하기"}
+        </button>
+    );
+}
+
+export default ConfirmButton;
+``` 
+Toolbar
+
+```js
+import React from "react";
+
+const styles = {
+    wrapper: {
+        padding: 16,
+        display: "flex",
+        flexDirection: "row",
+        borderBottom: "1px solid grey",
+    },
+    greeting: {
+        marginRight: 8,
+    },
+};
+
+function Toolbar(props) {
+    const { isLoggedIn, onClickLogin, onClickLogout } = props;
+
+    return (
+        <div style={styles.wrapper}>
+            {isLoggedIn && <span style={styles.greeting}>환영합니다!</span>}
+
+            {isLoggedIn ? (
+                <button onClick={onClickLogout}>로그아웃</button>
+            ) : (
+                <button onClick={onClickLogin}>로그인</button>
+            )}
+        </div>
+    );
+}
+
+export default Toolbar;
+```
+LandingPage
+```js
+import React, { useState } from "react";
+import Toolbar from "./Toolbar";
+
+function LandingPage(props) {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const onClickLogin = () => {
+        setIsLoggedIn(true);
+    };
+
+    const onClickLogout = () => {
+        setIsLoggedIn(false);
+    };
+
+    return (
+        <div>
+            <Toolbar
+                isLoggedIn={isLoggedIn}
+                onClickLogin={onClickLogin}
+                onClickLogout={onClickLogout}
+            />
+            <div style={{ padding: 16 }}>소플과 함께하는 리액트 공부!</div>
+        </div>
+    );
+}
+
+export default LandingPage;
+```
 ## 강의날짜:04/13(7주차)  
 ### 학습내용
 ## 챕터7(훅)
